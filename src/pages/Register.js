@@ -32,8 +32,9 @@ const Register=()=> {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-100 p-4">
+    <div className="min-h-screen flex items-center justify-center bg-gray-200 p-4">
       <div className="w-full max-w-sm bg-white shadow-lg rounded-xl p-6">
+         <h1 className="text-xl font-bold text-center mb-5 text-blue-800"> Smart Spend</h1>
         <h2 className="text-2xl font-bold text-center mb-6 text-gray-800">
           Register
         </h2>

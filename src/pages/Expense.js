@@ -459,24 +459,29 @@ const Expense = () => {
   const [desc, setDesc] = useState("");
 
   const [expenses, setExpenses] = useState([]);
-  const [editId, setEditId] = useState(null);
-  const [categories, setCategories] = useState([]);
+const [editId, setEditId] = useState(null);
+const [categories, setCategories] = useState([]);
   const [showAddCategory, setShowAddCategory] = useState(false);
   const [newCategory, setNewCategory] = useState("");
 
 const [amountError, setAmountError] = useState("");
-
-  const fetchCategories = async () => {
+const fetchCategories = async () => {
     try {
       const res = await api.get("Category/GetAllCategories");
-      setCategories(res.data);
-    } catch (error) {
+setCategories(res.data);
+    } 
+    catch (error) {
       console.error("Error loading categories:", error);
     }
   };
 
   useEffect(() => {
     fetchCategories();
+     fetchExpenses();
+    window.history.pushState(null, null, window.location.href);
+  window.onpopstate = function () {
+    window.history.pushState(null, null, window.location.href);
+  };
   }, []);
 
   const handleCategoryChange = (e) => {
@@ -509,10 +514,7 @@ const [amountError, setAmountError] = useState("");
     }
   };
 
-  useEffect(() => {
-    fetchExpenses();
-  }, []);
-
+  
   const handleSubmit = async (e) => {
     e.preventDefault();
     const expenseData = {
@@ -565,13 +567,14 @@ const [amountError, setAmountError] = useState("");
     localStorage.removeItem("token");
     localStorage.removeItem("name");
     navigate("/login");
+    window.location.href = "/";
   };
 
   const username = localStorage.getItem("name");
 
   return (
     <div className="min-h-screen bg-gray-100 p-6">
-      <div className="flex justify-between items-center mb-6 p-4 bg-white shadow rounded-xl">
+      <div className="flex justify-between items-center mb-6 p-4 bg-gray shadow rounded-xl">
         <h1 className="text-2xl font-bold">{username ? `${username}'s Expenses` : "Dashboard"}</h1>
         <div className="flex items-center gap-4">
           <Link to="/Dashboard" className="text-black  hover:underline text-blue-800">Dashboard</Link>
@@ -594,7 +597,7 @@ const [amountError, setAmountError] = useState("");
       onChange={(e) => {
         const value = e.target.value;
 
-        if (Number(value) <= 0 || value === "") {
+        if (value  <= 0 || value === "") {
           setAmountError("Amount must be greater than 0");
         } else {
           setAmountError("");
@@ -647,7 +650,13 @@ const [amountError, setAmountError] = useState("");
 
         {/* TABLE */}
         <div className="bg-white p-6 shadow rounded-xl overflow-auto">
-          <h2 className="text-xl font-bold mb-4">Your Expenses</h2>
+         <div className="mb-4 flex justify-between items-center">
+    <h2 className="text-xl font-bold">Your Expenses</h2>
+    <p className="text-lg font-semibold text-blue-600">
+      Total: ₹{expenses.reduce((sum, e) => sum + e.amountSpent, 0)}
+    </p>
+  </div>
+      
           <table className="w-full border-collapse">
             <thead>
               <tr className="bg-gray-200 text-left">
