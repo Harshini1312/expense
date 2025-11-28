@@ -30,12 +30,12 @@ const Dashboard = () => {
   const [expenses, setExpenses] = useState([]);
   const [categories, setCategories] = useState([]);
 
-  // Main Filters
+
   const [filterCategory, setFilterCategory] = useState("");
   const [startDate, setStartDate] = useState("");
   const [endDate, setEndDate] = useState("");
 
-  // Monthly Trend Filter (Year only)
+ 
   const [trendYear, setTrendYear] = useState("");
 
   useEffect(() => {
@@ -155,7 +155,7 @@ const Dashboard = () => {
   return (
     <div className="p-6 space-y-6">
 
-      {/* HEADER */}
+     
       <div className="flex justify-between items-center mb-6 p-4 bg-gray-200 shadow rounded-xl">
         <h1 className="text-2xl font-bold">
           {username ? `${username}'s Dashboard` : "Dashboard"}
@@ -175,7 +175,7 @@ const Dashboard = () => {
         </div>
       </div>
 
-      {/* MAIN FILTERS */}
+     
       <div className="bg-gray-200 p-4 rounded shadow grid grid-cols-1 md:grid-cols-4 gap-4">
         <div>
           <p className="font-medium mb-1">Category</p>
@@ -223,7 +223,7 @@ const Dashboard = () => {
         </div>
       </div>
 
-      {/* STATS & CHARTS */}
+      
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
  <div className="bg-gray-100 p-4 rounded shadow">
           <h2 className="text-lg font-semibold">Total Expense</h2>
@@ -239,7 +239,7 @@ const Dashboard = () => {
   <div className="bg-gray-100 p-4 rounded shadow">
           <h2 className="text-lg font-semibold mb-2">Monthly Trend</h2>
 
-          {/* YEAR FILTER */}
+          
    <div className="mb-3">
             <select
               value={trendYear}
@@ -256,7 +256,7 @@ const Dashboard = () => {
           </div>
         </div>
       </div>
-      {/* EXPENSE TABLE */}
+     
       <div className="bg-gray-200 p-4 rounded shadow">
         <h2 className="text-lg font-semibold mb-4">Expenses</h2>
     <table className="w-full text-left">

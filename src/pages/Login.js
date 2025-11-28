@@ -36,25 +36,22 @@ const Login = () => {
         <input
           placeholder="Name"
           value={name}
-          onChange={(e) => setName(e.target.value)}
+ onChange={(e) => setName(e.target.value)}
           onKeyDown={handleKeyDown}
           className="w-full mb-3 px-3 py-2 border border-gray-300 rounded-lg 
                      focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
         />
-
-        <input
+     <input
           type="password"
-          placeholder="Password"
+  placeholder="Password"
           value={password}
-          onChange={(e) => setPassword(e.target.value)}
-          onKeyDown={handleKeyDown}
+          onChange={(e) => setPassword(e.target.value)} onKeyDown={handleKeyDown}
           className="w-full mb-4 px-3 py-2 border border-gray-300 rounded-lg 
                      focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
         />
 
         <button
-          onClick={handleLogin}
-          disabled={!name || !password}
+          onClick={handleLogin} disabled={!name || !password}
           className="w-full bg-blue-600 text-white py-2 rounded-lg font-semibold
                      hover:bg-blue-700 disabled:bg-gray-400 transition"
         >
