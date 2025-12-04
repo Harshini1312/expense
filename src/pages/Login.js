@@ -8,11 +8,12 @@ const Login = () => {
 
   const navigate = useNavigate();
 
-  const handleKeyDown = (e) => {
-    if (e.key === "Enter") handleLogin();
-  };
+  // const handleKeyDown = (e) => {
+  //   if (e.key === "Enter") handleLogin();
+  // };
 
-  const handleLogin = async () => {
+  const handleLogin = async (e) => {
+    e.preventDefault();
     try {
       const res = await api.post("/User/login", { name, password });
 
@@ -32,12 +33,12 @@ const Login = () => {
         <h2 className="text-xl font-bold text-center mb-5 text-gray-800">
           Login
         </h2>
-
+<form onSubmit={handleLogin}>
         <input
           placeholder="Name"
           value={name}
  onChange={(e) => setName(e.target.value)}
-          onKeyDown={handleKeyDown}
+          // onKeyDown={handleKeyDown}
           className="w-full mb-3 px-3 py-2 border border-gray-300 rounded-lg 
                      focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
         />
@@ -45,13 +46,14 @@ const Login = () => {
           type="password"
   placeholder="Password"
           value={password}
-          onChange={(e) => setPassword(e.target.value)} onKeyDown={handleKeyDown}
+          onChange={(e) => setPassword(e.target.value)} 
+          // onKeyDown={handleKeyDown}
           className="w-full mb-4 px-3 py-2 border border-gray-300 rounded-lg 
                      focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
         />
 
         <button
-          onClick={handleLogin} disabled={!name || !password}
+          // onClick={handleLogin} disabled={!name || !password}
           className="w-full bg-blue-600 text-white py-2 rounded-lg font-semibold
                      hover:bg-blue-700 disabled:bg-gray-400 transition"
         >
@@ -64,6 +66,7 @@ const Login = () => {
             Register
           </Link>
         </p>
+        </form>
       </div>
     </div>
   );

@@ -19,9 +19,11 @@ const [categories, setCategories] = useState([]);
   const [newCategory, setNewCategory] = useState("");
 
 const [amountError, setAmountError] = useState("");
+const token=localStorage.getItem("token")
+//fetch categories from api
 const fetchCategories = async () => {
     try {
-      const res = await api.get("Category/GetAllCategories");
+      const res = await api.get("Category/GetAllCategories",{headers:{Authorization:`Bearer ${token}`,},});
 setCategories(res.data);
     } 
     catch (error) {
@@ -31,13 +33,9 @@ setCategories(res.data);
 
   useEffect(() => {
     fetchCategories();
-     fetchExpenses();
-    window.history.pushState(null, null, window.location.href);
-  window.onpopstate = function () {
-    window.history.pushState(null, null, window.location.href);
-  };
+     fetchExpenses(); 
   }, []);
-
+//Change category
   const handleCategoryChange = (e) => {
     const value = e.target.value;
     if (value === "add") {
@@ -45,11 +43,11 @@ setCategories(res.data);
       setCategory("");
     } else setCategory(value);
   };
-
+//Add new category
   const handleAddCategory = async () => {
     if (!newCategory.trim()) return alert("Enter valid category name");
     try {
-      await api.post("Category/AddCategory", { categoryName: newCategory });
+      await api.post("Category/AddCategory", { categoryName: newCategory },{headers:{Authorization:`Bearer ${token}`,},});
       alert("Category added successfully!");
    setShowAddCategory(false);
       setNewCategory("");
@@ -58,16 +56,18 @@ setCategories(res.data);
       alert("Failed to add category");
     }
   };
-
+//Get Expenses
   const fetchExpenses = async () => {
     try {
-      const res = await api.get("/Expense/GetUserExpenses");    setExpenses(res.data);
+      
+      const res = await api.get("/Expense/GetUserExpenses",
+        {headers:{Authorization:`Bearer ${token}`,},});    setExpenses(res.data);
     } catch {
       console.error("Error loading expenses");
     }
   };
 
-  
+  //Submit data and add expense,update expense
   const handleSubmit = async (e) => {
     e.preventDefault();
     const expenseData = {
@@ -82,7 +82,7 @@ setCategories(res.data);
  await api.post("/Expense/AddExpense", expenseData);
         alert("Expense Added!");
       } else {
-        await api.put(`/Expense/UpdateExpense/${editId}`, expenseData);
+        await api.put(`/Expense/UpdateExpense/${editId}`, expenseData,{headers:{Authorization:`Bearer ${token}`,},});
   alert("Expense Updated!");
         setEditId(null);
       }
@@ -103,11 +103,11 @@ setCategories(res.data);
     setDate(exp.spendDate.split("T")[0]);
     setDesc(exp.description);
   };
-
+//Delete Expense
   const handleDelete = async (id) => {
     if (!window.confirm("Are you sure?")) return;
     try {
-      await api.delete(`/Expense/DeleteExpense/${id}`);
+      await api.delete(`/Expense/DeleteExpense/${id}`,{headers:{Authorization:`Bearer ${token}`,},});
       setExpenses((prev) => prev.filter((exp) => exp.expenseId !== id));
   alert("Deleted");
     } catch {
@@ -116,6 +116,7 @@ setCategories(res.data);
   };
 
   const navigate = useNavigate();
+  //Logout
   const handleLogout = () => {
 localStorage.removeItem("token");
     localStorage.removeItem("name");
@@ -192,7 +193,7 @@ localStorage.removeItem("token");
             </div>
 
             <div>
-              <label className="font-semibold">Description</label>
+              <label className="font-semibold">Description(optional)</label>
               <input className="w-full p-2 border rounded mt-1" value={desc} onChange={(e) => setDesc(e.target.value)} />
             </div>
 

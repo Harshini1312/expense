@@ -22,8 +22,8 @@ ChartJS.register(
   CategoryScale,
   LinearScale,
   BarElement,
-  PointElement,
-  LineElement
+ // PointElement,
+ // LineElement
 );
 
 const Dashboard = () => {
@@ -37,7 +37,7 @@ const Dashboard = () => {
 
  
   const [trendYear, setTrendYear] = useState("");
-
+const token=localStorage.getItem("token")
   useEffect(() => {
     fetchExpenses();
     fetchCategories();
@@ -50,7 +50,7 @@ const Dashboard = () => {
 
   const fetchExpenses = async () => {
     try {
-      const res = await api.get("/Expense/GetUserExpenses");
+      const res = await api.get("/Expense/GetUserExpenses",{headers:{Authorization:`Bearer ${token}`,},});
       setExpenses(res.data);
     } catch (err) {
       console.error("Error loading expenses:", err);
@@ -59,14 +59,14 @@ const Dashboard = () => {
 
   const fetchCategories = async () => {
     try {
-      const res = await api.get("/Category/GetAllCategories");
+      const res = await api.get("/Category/GetAllCategories",{headers:{Authorization:`Bearer ${token}`,},});
       setCategories(res.data);
     } catch (err) {
       console.error("Error loading categories:", err);
     }
   };
 
-
+//filter by category and date
   const filteredExpenses = expenses.filter((exp) => {
     let match = true;
     if (filterCategory) match = match && exp.categoryName === filterCategory;
@@ -76,7 +76,7 @@ const Dashboard = () => {
     return match;
   });
 
-
+// total expense
   const totalExpense = filteredExpenses.reduce(
     (sum, e) => sum + e.amountSpent,
     0
@@ -88,7 +88,7 @@ const Dashboard = () => {
       (acc[item.categoryName] || 0) + item.amountSpent;
     return acc;
   }, {});
-
+//pie chart
   const pieData = {
     labels: Object.keys(categoryTotals),
     datasets: [
@@ -96,14 +96,8 @@ const Dashboard = () => {
         data: Object.values(categoryTotals),
         backgroundColor: [
           "#FF6384",
-          "#36A2EB",
-          "#FFCE56",
-          "#4CAF50",
-          "#9966FF",
-          "#FF9F40",
-        ],
-      },
-    ],
+       "#36A2EB", "#FFCE56",  "#4CAF50", "#9966FF","#FF9F40",
+        ],},],
   };
 
 
@@ -121,7 +115,7 @@ const Dashboard = () => {
     "January", "February", "March", "April", "May", "June",
     "July", "August", "September", "October", "November", "December"
   ];
-
+//Monthly trend for particular category
   const monthlyTotals = trendFiltered.reduce((acc, exp) => {
     if (filterCategory && exp.categoryName !== filterCategory) return acc;
     const d = new Date(exp.spendDate);
@@ -129,7 +123,7 @@ const Dashboard = () => {
     acc[month] = (acc[month] || 0) + exp.amountSpent;
     return acc;
   }, {});
-
+//Bar Chart
   const monthlyTrendData = {
     labels: Object.keys(monthlyTotals),
     datasets: [
