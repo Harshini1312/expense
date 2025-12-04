@@ -17,8 +17,6 @@ jest.mock('../../api/axiosConfig', () => ({
   },
 }));
 
-// Ensure react-router-dom navigation mock is available (moduleNameMapper provides a mock),
-// but override here if we want to observe navigations.
 const mockNavigate = jest.fn();
 jest.mock('react-router-dom', () => ({
   useNavigate: () => mockNavigate,
